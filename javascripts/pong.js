@@ -21,8 +21,6 @@ var step = function() {
   animate(step);
 };
 
-var update = function() {};
-
 function Paddle (x, y, width, height) {
   this.x = x;
   this.y = y;
@@ -78,4 +76,33 @@ var render = function() {
   player.render();
   computer.render();
   ball.render();
+};
+
+var update = function() {
+  ball.update(player.paddle, computer.paddle);
+};
+
+Ball.prototype.update = function() {
+  this.x += this.x_speed;
+  this.y += this.y_speed;
+  var top_x = this.x - 5;
+  var top_y = this.y - 5;
+  var bottom_x = this.x + 5;
+  var bottom_y = this.y + 5;
+  
+  if (this.x - 5 <0){//hitting left wall
+    this.x = 5;
+    this.x_speed = this.x_speed;
+  }
+  else if (this.x+5 > 400){//hitting right wall
+    this.x = 395;
+    this.x_speed = -this.x_speed;
+  }
+  
+  if(this.y < 0 || this.y > 600) { // a point was scored
+    this.x_speed = 0;
+    this.y_speed = 3;
+    this.x = 200;
+    this.y = 300;
+  }
 };
